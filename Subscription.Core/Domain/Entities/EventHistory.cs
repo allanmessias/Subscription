@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Subscription.Core.DTO
+namespace Subscription.Core.Domain.Entities
 {
     public class EventHistory
     {

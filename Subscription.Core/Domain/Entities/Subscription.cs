@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Subscription.Core.DTO
+namespace Subscription.Core.Domain.Entities
 {
     public class Subscription
     {
@@ -20,8 +20,6 @@ namespace Subscription.Core.DTO
         public DateTime CreatedAt { get; set; }
         [Required]
         public DateTime? UpdatedAt { get; set; }
-
-        
         public ICollection<EventHistory> EventHistories { get; set; } = new List<EventHistory>();
     }
 }

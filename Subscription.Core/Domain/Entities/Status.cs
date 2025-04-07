@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Subscription.Core.DTO
+namespace Subscription.Core.Domain.Entities
 {
     public class Status
     {
