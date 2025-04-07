@@ -2,13 +2,11 @@
 
 namespace Subscription.Core.Domain.Entities
 {
-    public class Status
+    public enum Status
     {
-        [Key]
-        public int id;
 
-        [MaxLength(50)]
-        public string name;
-
+        Active = 1,
+        Canceled = 2,
+        Restarted = 3,
     }
 }
