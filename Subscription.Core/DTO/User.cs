@@ -1,4 +1,4 @@
-﻿namespace Domain.Domain
+﻿namespace Subscription.Core.DTO
 
 {
     public class User
