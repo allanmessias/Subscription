@@ -1,5 +1,7 @@
-﻿using RabbitMQ.Client;
+﻿using Microsoft.Extensions.Options;
+using RabbitMQ.Client;
 using Subscription.Core.Domain;
+using Subscription.Infrastructure.Configuration;
 
 namespace Subscription.Infrastructure.RabbitMQ;
 
@@ -7,10 +9,11 @@ public class RabbitMqConnection : IMessageBrokerConnection
 {
     private IConnection _connection;
     private readonly ConnectionFactory _factory;
+    private readonly RabbitMqOptions _options;
 
-    public RabbitMqConnection(string hostName = "localhost")
+    public RabbitMqConnection(IOptions<RabbitMqOptions> options)
     {
-        _factory = new ConnectionFactory() { HostName = hostName };
+        _options = options.Value;
     }
 
     public bool IsConnected => _connection?.IsOpen ?? false;
