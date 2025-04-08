@@ -11,7 +11,14 @@ namespace Subscription.Infrastructure.Persistence
 
         public DbSet<User> Users { get; set; }
         public DbSet<SubscriptionModel> Subscriptions { get; set; }
-        public DbSet<Status> Statuses { get; set; }
         public DbSet<EventHistory> EventHistories { get; set; }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SubscriptionModel>()
+            .Property(s => s.Status)
+            .HasConversion<string>();
+        }
     }
+
 }
