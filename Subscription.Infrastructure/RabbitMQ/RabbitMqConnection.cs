@@ -46,4 +46,9 @@ public class RabbitMqConnection : IMessageBrokerConnection
 
         return await _connection!.CreateChannelAsync();
     }
+
+    public string GetConnectionString()
+    {
+        return $"amqp://{_options.UserName}:{_options.Password}@{_options.Host}:{_options.Port}/";
+    }
 }
