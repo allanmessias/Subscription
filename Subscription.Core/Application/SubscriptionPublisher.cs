@@ -1,12 +1,12 @@
-﻿using Subscription.Core.Interfaces;
+﻿using Subscription.Core.Domain;
 
-namespace Subscription.Infrastructure;
+namespace Subscription.Application;
 
-public class RabbitMqPublisher
+public class SubscriptionPublisher
 {
     private readonly IMessagePublisher _publisher;
 
-    public RabbitMqPublisher(IMessagePublisher publisher)
+    public SubscriptionPublisher(IMessagePublisher publisher)
     {
         _publisher = publisher;
     }

@@ -1,9 +1,13 @@
-﻿namespace Domain.Domain
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Subscription.Core.Domain.Entities
 
 {
     public class User
     {
-        public int Id {  get; set; }
+        [Key]
+        public Guid Id{  get; set; }
+        [Required]
         public string FullName {  get; set; }
 
         public DateTime CreatedAt { get; set; }
