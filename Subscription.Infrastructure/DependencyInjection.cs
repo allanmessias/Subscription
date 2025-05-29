@@ -16,6 +16,7 @@ namespace Subscription.Infrastructure
             services.AddSingleton<RabbitMqPublisher>();
             services.AddSingleton<IMessagePublisher>(provider => new SubscriptionPublisher(provider.GetRequiredService<RabbitMqPublisher>))();
             services.AddScoped<ISendSubscriptionUseCase, SendSubscriptionUseCase>();
+            services.AddSingleton<IMessagePublisher, RabbitMqPublisher>();
 
 
             return services;
