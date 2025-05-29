@@ -14,6 +14,13 @@ public class RabbitMqConnection : IMessageBrokerConnection
     public RabbitMqConnection(IOptions<RabbitMqOptions> options)
     {
         _options = options.Value;
+
+        _factory = new ConnectionFactory { 
+            HostName = _options.Host, 
+            Port = _options.Port, 
+            UserName = _options.UserName, 
+            Password = _options.Password,
+        };
     }
 
     public bool IsConnected => _connection?.IsOpen ?? false;
@@ -21,6 +28,8 @@ public class RabbitMqConnection : IMessageBrokerConnection
     public async Task ConnectAsync(CancellationToken cancellationToken = default)
     {
         if (IsConnected) return;
+
+        Console.WriteLine($"Conectando ao RabbitMQ em {_options.Host}:{_options.Port}");
 
         _connection = await _factory.CreateConnectionAsync();
         await Task.CompletedTask;
