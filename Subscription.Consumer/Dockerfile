@@ -1,9 +1,9 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0-preview AS base
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y postgresql-client
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0-preview AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 COPY Subscription.sln .
@@ -29,3 +29,4 @@ COPY Subscription.Consumer/entrypoint.sh ./entrypoint.sh
 RUN chmod +x ./entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
+

@@ -18,7 +18,7 @@ public class SubscriptionController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] SubscriptionEventDto dto)
     {
-        await _useCase.ExecuteAsync("subscription.updated", dto);
+        await _useCase.ExecuteAsync("subscription.test", dto);
         return Ok("Published Message");
     }
 }
