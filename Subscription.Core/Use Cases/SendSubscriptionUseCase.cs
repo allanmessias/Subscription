@@ -1,5 +1,5 @@
 ﻿using Subscription.Core.Application;
-using Subscription.Core.Domain
+using Subscription.Core.Domain;
 
 namespace Subscription.Application.UseCases
 {
@@ -12,12 +12,10 @@ namespace Subscription.Application.UseCases
             _messagePublisher = messagePublisher;
         }
 
-        public async Task ExecuteAsync(SubscriptionUpdatedEvent subscription, CancellationToken cancellationToken = default)
+        public async Task ExecuteAsync<T>(string routingKey, T message)
         {
-            if (string.IsNullOrEmpty(subscription.Email))
-                throw new ArgumentException("Email inválido.");
 
-            await _messagePublisher.PublishAsync("subscription-topic", subscription, cancellationToken);
+            await _messagePublisher.PublishAsync(message, routingKey);
         }
     }
 }
