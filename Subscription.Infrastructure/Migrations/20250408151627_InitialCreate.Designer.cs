@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Subscription.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using Subscription.Infrastructure.Persistence;
 namespace Subscription.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250408151627_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,15 +93,6 @@ namespace Subscription.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("8d868b2a-df36-4a0e-bf40-7271c4f014f7"),
-                            CreatedAt = new DateTime(2024, 4, 9, 12, 0, 0, 0, DateTimeKind.Utc),
-                            FullName = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("Subscription.Core.Domain.Entities.EventHistory", b =>

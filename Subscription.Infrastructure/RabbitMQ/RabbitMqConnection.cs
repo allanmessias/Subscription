@@ -14,6 +14,7 @@ public class RabbitMqConnection : IMessageBrokerConnection
     public RabbitMqConnection(IOptions<RabbitMqOptions> options)
     {
         _options = options.Value;
+
         _factory = new ConnectionFactory { 
             HostName = _options.Host, 
             Port = _options.Port, 

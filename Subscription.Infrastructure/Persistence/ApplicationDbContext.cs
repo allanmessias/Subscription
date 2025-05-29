@@ -24,7 +24,6 @@ namespace Subscription.Infrastructure.Persistence
                     FullName = "Admin",
                     CreatedAt = new DateTime(2024, 04, 09, 12, 0, 0, DateTimeKind.Utc)
                 });
-
             modelBuilder.Entity<SubscriptionModel>()
             .Property(s => s.Status)
             .HasConversion<string>();

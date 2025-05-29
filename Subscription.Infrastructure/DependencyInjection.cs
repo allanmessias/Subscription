@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Subscription.Application;
 using Subscription.Application.UseCases;
 using Subscription.Core.Application;
 using Subscription.Core.Domain;
@@ -14,7 +15,7 @@ namespace Subscription.Infrastructure
         {
             services.AddSingleton<IMessageBrokerConnection, RabbitMqConnection>();
             services.AddSingleton<RabbitMqPublisher>();
-            services.AddSingleton<IMessagePublisher>(provider => new SubscriptionPublisher(provider.GetRequiredService<RabbitMqPublisher>))();
+            services.AddSingleton<SubscriptionPublisher>();
             services.AddScoped<ISendSubscriptionUseCase, SendSubscriptionUseCase>();
             services.AddSingleton<IMessagePublisher, RabbitMqPublisher>();
 
