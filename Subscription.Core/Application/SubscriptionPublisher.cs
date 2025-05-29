@@ -11,8 +11,10 @@ public class SubscriptionPublisher
         _publisher = publisher;
     }
 
-    public Task SendEventAsync<T>(string topic, T message, CancellationToken cancellationToken = default)
+    public Task SendEventAsync<T>(T message, string routingKey, CancellationToken cancellationToken = default)
     {
-        return _publisher.PublishAsync(topic, message, cancellationToken);
+        if (message is null) throw new ArgumentNullException(nameof(message));    
+
+        return _publisher.PublishAsync(message, routingKey, cancellationToken);
     }
 }
