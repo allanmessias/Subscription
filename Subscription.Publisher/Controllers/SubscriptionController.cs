@@ -24,6 +24,19 @@ public class SubscriptionController : ControllerBase
     public async Task<IActionResult> Post([FromBody] SubscriptionNotificationRequest request)
     {
         switch ()
+        
+    private readonly ISendSubscriptionUseCase _useCase;
+
+    public SubscriptionController(ISendSubscriptionUseCase useCase)
+    {
+        _useCase = useCase;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] SubscriptionEventDto dto)
+    {
+        await _useCase.ExecuteAsync("subscription.test", dto);
+        return Ok("Published Message");
     }
 }
 

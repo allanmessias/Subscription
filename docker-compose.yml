@@ -86,3 +86,4 @@ volumes:
 networks:
   subscription-net:
     driver: bridge
+

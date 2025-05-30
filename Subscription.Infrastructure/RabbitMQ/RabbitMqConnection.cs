@@ -1,5 +1,7 @@
-﻿using RabbitMQ.Client;
+﻿using Microsoft.Extensions.Options;
+using RabbitMQ.Client;
 using Subscription.Core.Domain;
+using Subscription.Infrastructure.Configuration;
 
 namespace Subscription.Infrastructure.RabbitMQ;
 
@@ -7,8 +9,9 @@ public class RabbitMqConnection : IMessageBrokerConnection
 {
     private IConnection _connection;
     private readonly ConnectionFactory _factory;
+    private readonly RabbitMqOptions _options;
 
-    public RabbitMqConnection(string hostName = "localhost")
+    public RabbitMqConnection(IOptions<RabbitMqOptions> options)
     {
         _options = options.Value;
         _factory = new ConnectionFactory { 
@@ -24,7 +27,6 @@ public class RabbitMqConnection : IMessageBrokerConnection
     public async Task ConnectAsync(CancellationToken cancellationToken = default)
     {
         if (IsConnected) return;
-
 
         _connection = await _factory.CreateConnectionAsync();
         await Task.CompletedTask;
@@ -49,5 +51,10 @@ public class RabbitMqConnection : IMessageBrokerConnection
         }
 
         return await _connection!.CreateChannelAsync();
+    }
+
+    public string GetConnectionString()
+    {
+        return $"amqp://{_options.UserName}:{_options.Password}@{_options.Host}:{_options.Port}/";
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Subscription.Infrastructure.Configuration
 {
-    public class RabbitMqOptions 
+    public class RabbitMqOptions
     {
         public string Host { get; set; } = "rabbitmq";
         public int Port { get; set; } = 5672;
