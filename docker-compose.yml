@@ -1,0 +1,88 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    container_name: pg-subscription
+    environment:
+      POSTGRES_USER: subscription_user
+      POSTGRES_PASSWORD: change123
+      POSTGRES_DB: subscription_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - subscription-net
+    healthcheck:
+        test: ["CMD", "pg_isready", "-U", "subscription_user", "-d", "subscription_db"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+
+  publisher:
+    build:
+      context: . 
+      dockerfile: Subscription.Publisher/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq: 
+        condition: service_started
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=subscription_db;Username=subscription_user;Password=change123
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__Port=5672
+      - RabbitMQ__UserName=guest
+      - RabbitMQ__Password=guest
+    ports:
+      - "5000:80"
+    networks:
+      - subscription-net
+
+  consumer:
+    build:
+      context: .
+      dockerfile: Subscription.Consumer/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=subscription_db;Username=subscription_user;Password=change123
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__UserName=guest
+      - RabbitMQ__Password=guest
+    networks:
+      - subscription-net
+    ports:
+      - 6000:80    
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_subscription
+    ports:
+        - "15672:15672"
+        - "5672:5672"
+    healthcheck:
+        test: ["CMD", "rabbitmqctl", "status"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=subscription_db;Username=subscription_user;Password=change123
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - subscription-net
+
+volumes:
+  pgdata:
+
+networks:
+  subscription-net:
+    driver: bridge

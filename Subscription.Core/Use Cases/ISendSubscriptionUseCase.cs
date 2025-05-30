@@ -4,6 +4,6 @@ namespace Subscription.Core.Application
 {
     public interface ISendSubscriptionUseCase
     {
-        Task ExecuteAsync(SubscriptionUpdatedEvent subscription, CancellationToken cancellationToken = default);
+        Task ExecuteAsync<T>(string routingKey, T message);
     }
 }

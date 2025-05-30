@@ -2,5 +2,5 @@ namespace Subscription.Core.Domain;
 
 public interface IMessagePublisher
 {
-	Task PublishAsync<T>(string topic, T message, CancellationToken cancellationToken = default);
+	Task PublishAsync<T>(T message, string routingKey = null, CancellationToken cancellationToken = default);
 }
