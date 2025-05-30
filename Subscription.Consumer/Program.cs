@@ -21,7 +21,6 @@ var host = builder.Build();
 using (var scope = host.Services.CreateScope())
 {
     var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-    Console.WriteLine("Connection string usada: " + config.GetConnectionString("DefaultConnection"));
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     db.Database.Migrate();
 }
