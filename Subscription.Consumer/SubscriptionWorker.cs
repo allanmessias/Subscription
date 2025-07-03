@@ -13,7 +13,7 @@ public class SubscriptionWorker : BackgroundService
 
     private const string ExchangeName = "subscription_exchange";
     private const string QueueName = "subscription_created";
-    private const string RoutingKey = "subscription.test";
+    private const string RoutingKey = "subscription.ascan";
 
     public SubscriptionWorker(ILogger<SubscriptionWorker> logger, IMessageBrokerConnection connection)
     {

@@ -1,8 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
-WORKDIR /app
-
-RUN apt-get update && apt-get install -y postgresql-client
-
+# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
@@ -16,17 +12,19 @@ COPY Subscription.Tests/Subscription.Tests.csproj Subscription.Tests/
 RUN dotnet restore Subscription.sln
 
 COPY . .
+
 WORKDIR /src/Subscription.Consumer
 RUN dotnet build -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish -c Release -o /app/publish
 
-FROM base AS final
+# Final image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
+
+RUN apt-get update && apt-get install -y postgresql-client dos2unix ca-certificates && rm -rf /var/lib/apt/lists/*
+
 COPY --from=publish /app/publish .
-COPY Subscription.Consumer/entrypoint.sh ./entrypoint.sh
-RUN chmod +x ./entrypoint.sh
 
-ENTRYPOINT ["./entrypoint.sh"]
-
+ENTRYPOINT ["dotnet", "Subscription.Consumer.dll"]

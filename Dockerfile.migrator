@@ -1,0 +1,10 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+WORKDIR /app
+
+RUN dotnet tool install --global dotnet-ef
+
+ENV PATH="${PATH}:/root/.dotnet/tools"
+
+COPY . .
+
+ENTRYPOINT ["dotnet", "ef", "database", "update", "--project", "Subscription.Infrastructure/Subscription.Infrastructure.csproj", "--startup-project", "Subscription.Publisher/Subscription.Publisher.csproj"]
