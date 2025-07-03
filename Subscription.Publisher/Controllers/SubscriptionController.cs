@@ -2,8 +2,6 @@
 using Subscription.Core.Application;
 using Subscription.Core.Domain;
 
-namespace Subscription.Publisher.Controllers;
-
 [ApiController]
 [Route("api/[controller]")]
 public class SubscriptionController : ControllerBase
@@ -12,8 +10,10 @@ public class SubscriptionController : ControllerBase
     private readonly IDeactivateSubscriptionUseCase _cancel;
     private readonly IRestoreSubscriptionUseCase _restore;
 
-    public SubscriptionController(IActivateSubscriptionUseCase activate, 
-        IDeactivateSubscriptionUseCase cancel, IRestoreSubscriptionUseCase restore)
+    public SubscriptionController(
+        IActivateSubscriptionUseCase activate,
+        IDeactivateSubscriptionUseCase cancel,
+        IRestoreSubscriptionUseCase restore)
     {
         _activate = activate;
         _cancel = cancel;
@@ -23,25 +23,25 @@ public class SubscriptionController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] SubscriptionNotificationRequest request)
     {
-        switch ()
-        
-    private readonly ISendSubscriptionUseCase _useCase;
+     
+        switch (request.NotificationType)
+        {
+            case SubscriptionNotificationType.SUBSCRIPTION_PURCHASED:
+                await _activate.Execute(request.UserId, request.SubscriptionId);
+                break;
 
-    public SubscriptionController(ISendSubscriptionUseCase useCase)
-    {
-        _useCase = useCase;
+            //case SubscriptionNotificationType.SUBSCRIPTION_CANCELED:
+            //    await _cancel.Execute(dto.UserId, dto.SubscriptionId);
+            //    break;
+
+            //case SubscriptionNotificationType.SUBSCRIPTION_RESTARTED:
+            //    await _restore.Execute(dto.UserId, dto.SubscriptionId);
+            //    break;
+
+            default:
+                return BadRequest("Unhandled notification type.");
+        }
+
+        return Ok("Subscription event processed.");
     }
-
-    [HttpPost]
-    public async Task<IActionResult> Post([FromBody] SubscriptionEventDto dto)
-    {
-        await _useCase.ExecuteAsync("subscription.test", dto);
-        return Ok("Published Message");
-    }
-}
-
-public class SubscriptionEventDto
-{
-    public Guid SubscriptionId { get; set; }
-    public string Status { get; set; }
 }
