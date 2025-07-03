@@ -8,6 +8,6 @@ namespace Subscription.Core.Application
 {
     public interface IDeactivateSubscriptionUseCase
     {
-        Task ExecuteAsync(Guid userId, Guid subscriptionId, CancellationToken cancellationToken = default);
+        Task Execute(Guid userId, Guid subscriptionId, CancellationToken cancellationToken = default);
     }
 }
