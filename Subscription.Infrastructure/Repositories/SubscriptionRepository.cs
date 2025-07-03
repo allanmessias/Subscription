@@ -13,17 +13,6 @@ namespace Subscription.Infrastructure.Repositories
         {
             _context = context;
         }
-            
-        public async Task ActivateSubscriptionAsync(SubscriptionModel subscription, CancellationToken cancellationToken = default)
-        {
-            if (subscription is null)
-            {
-                throw new ArgumentNullException("Subscription cannot be null", nameof(subscription));
-            }
-
-            await _context.Subscriptions.AddAsync(subscription, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
-        }
 
         public async Task CreateSubscriptionAsync(SubscriptionModel subscription, CancellationToken cancellationToken = default)
         {
@@ -73,7 +62,10 @@ namespace Subscription.Infrastructure.Repositories
                 throw new ArgumentException("Subscription cannot be empty");
             }
 
-            _context.Subscriptions.Update(subscription);
+            subscription.UpdatedAt = DateTime.UtcNow;
+            subscription.Status = Status.Restarted;
+            subscription.StatusId = (int)Status.Restarted; 
+
             await _context.SaveChangesAsync(cancellationToken);
 
         }
