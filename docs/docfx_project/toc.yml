@@ -1,0 +1,16 @@
+- name: Visão Geral
+  href: index.md
+
+- name: API Documentation
+  href: api/
+
+- name: Módulos
+  items:
+    - name: Core
+      href: api/Subscription.Core.yml
+    - name: Publisher
+      href: api/Subscription.Publisher.yml
+    - name: Consumer
+      href: api/Subscription.Consumer.yml
+    - name: Infrastructure
+      href: api/Subscription.Infrastructure.yml

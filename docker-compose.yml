@@ -1,6 +1,17 @@
 version: '3.9'
 
 services:
+  docfx:
+    build: 
+      context: ./docs
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: docfx metadata && docfx build && docfx serve _site
+    ports:
+      - "8080:8080"     # Para acessar docfx via localhost:8080
+
   db:
     image: postgres:15
     container_name: pg-subscription
