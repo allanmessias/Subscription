@@ -14,6 +14,6 @@ namespace Subscription.Core.Interfaces
         
         Task DeleteAsync (Guid subscriptionId, CancellationToken cancellationToken = default);
 
-        Task AddAsync(SubscriptionModel subscription, CancellationToken cancellationToken = default);
+        Task CreateSubscriptionAsync(SubscriptionModel subscription, CancellationToken cancellationToken = default);
     }
 }

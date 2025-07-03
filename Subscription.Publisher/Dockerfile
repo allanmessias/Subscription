@@ -3,6 +3,8 @@ WORKDIR /src
 
 COPY . .
 
+RUN apt-get update && apt-get install -y ca-certificates && update-ca-certificates
+
 RUN dotnet restore Subscription.Publisher/Subscription.Publisher.csproj
 
 RUN dotnet publish Subscription.Publisher/Subscription.Publisher.csproj -c Release -o /app/publish

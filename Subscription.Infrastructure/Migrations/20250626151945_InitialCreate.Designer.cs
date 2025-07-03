@@ -12,7 +12,7 @@ using Subscription.Infrastructure.Persistence;
 namespace Subscription.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250408151627_InitialCreate")]
+    [Migration("20250626151945_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Subscription.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.3")
+                .HasAnnotation("ProductVersion", "9.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -64,7 +64,7 @@ namespace Subscription.Infrastructure.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
@@ -93,6 +93,14 @@ namespace Subscription.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("8d868b2a-df36-4a0e-bf40-7271c4f014f7"),
+                            CreatedAt = new DateTime(2024, 4, 9, 12, 0, 0, 0, DateTimeKind.Utc),
+                            FullName = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Subscription.Core.Domain.Entities.EventHistory", b =>

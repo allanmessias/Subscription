@@ -13,8 +13,8 @@ namespace Subscription.Infrastructure.Repositories
         {
             _context = context;
         }
-            
-        public async Task AddAsync(SubscriptionModel subscription, CancellationToken cancellationToken = default)
+
+        public async Task CreateSubscriptionAsync(SubscriptionModel subscription, CancellationToken cancellationToken = default)
         {
             if (subscription is null)
             {
@@ -35,11 +35,14 @@ namespace Subscription.Infrastructure.Repositories
                 throw new KeyNotFoundException($"Subscription with ID {subscriptionId} was not found.");
             }
 
-            _context.Subscriptions.Remove(subscription);
+            subscription.Status = Status.Canceled;
+            subscription.UpdatedAt = DateTime.UtcNow;
+            subscription.StatusId = (int)Status.Canceled;
+
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<SubscriptionModel> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<SubscriptionModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             if (id == Guid.Empty)
             {
@@ -49,12 +52,7 @@ namespace Subscription.Infrastructure.Repositories
             var subscription = await _context.Subscriptions
                 .FirstOrDefaultAsync<SubscriptionModel?>(s => s.Id == id, cancellationToken: cancellationToken);
 
-            if (subscription is null)
-            {
-                throw new KeyNotFoundException($"Subscription with ID {id} was not found.");
-            }
-
-            return subscription;
+            return subscription; 
         }
 
         public async Task UpdateStatusAsync(SubscriptionModel subscription, CancellationToken cancellationToken = default)
@@ -64,7 +62,10 @@ namespace Subscription.Infrastructure.Repositories
                 throw new ArgumentException("Subscription cannot be empty");
             }
 
-            _context.Subscriptions.Update(subscription);
+            subscription.UpdatedAt = DateTime.UtcNow;
+            subscription.Status = Status.Restarted;
+            subscription.StatusId = (int)Status.Restarted; 
+
             await _context.SaveChangesAsync(cancellationToken);
 
         }
