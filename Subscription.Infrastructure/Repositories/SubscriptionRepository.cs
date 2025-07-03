@@ -46,7 +46,10 @@ namespace Subscription.Infrastructure.Repositories
                 throw new KeyNotFoundException($"Subscription with ID {subscriptionId} was not found.");
             }
 
-            _context.Subscriptions.Remove(subscription);
+            subscription.Status = Status.Canceled;
+            subscription.UpdatedAt = DateTime.UtcNow;
+            subscription.StatusId = (int)Status.Canceled;
+
             await _context.SaveChangesAsync(cancellationToken);
         }
 

@@ -30,9 +30,9 @@ public class SubscriptionController : ControllerBase
                 await _activate.Execute(request.UserId, request.SubscriptionId);
                 break;
 
-            //case SubscriptionNotificationType.SUBSCRIPTION_CANCELED:
-            //    await _cancel.Execute(dto.UserId, dto.SubscriptionId);
-            //    break;
+            case SubscriptionNotificationType.SUBSCRIPTION_CANCELED:
+                await _cancel.Execute(request.UserId, request.SubscriptionId);
+                break;
 
             //case SubscriptionNotificationType.SUBSCRIPTION_RESTARTED:
             //    await _restore.Execute(dto.UserId, dto.SubscriptionId);
