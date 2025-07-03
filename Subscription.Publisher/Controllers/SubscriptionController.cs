@@ -28,20 +28,18 @@ public class SubscriptionController : ControllerBase
         {
             case SubscriptionNotificationType.SUBSCRIPTION_PURCHASED:
                 await _activate.Execute(request.UserId, request.SubscriptionId);
-                break;
+                return Ok("Subscription activated successfully.");
 
             case SubscriptionNotificationType.SUBSCRIPTION_CANCELED:
                 await _cancel.Execute(request.UserId, request.SubscriptionId);
-                break;
+                return Ok("Subscription canceled successfully.");
 
-            //case SubscriptionNotificationType.SUBSCRIPTION_RESTARTED:
-            //    await _restore.Execute(dto.UserId, dto.SubscriptionId);
-            //    break;
+            case SubscriptionNotificationType.SUBSCRIPTION_RESTARTED:
+                await _restore.Execute(request.UserId, request.SubscriptionId);
+                return Ok("Subscription restarted successfully.");
 
             default:
                 return BadRequest("Unhandled notification type.");
         }
-
-        return Ok("Subscription event processed.");
     }
 }

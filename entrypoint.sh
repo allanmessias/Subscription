@@ -8,7 +8,9 @@ if [ "$(docker compose ps 2> /dev/null)" ]; then
   echo -e "\033[0;32mStopping and removing all containers and volumes\033[0m"
   docker compose down -v
   echo -e "\033[0;32mRemoving existing subscription-migrator image\033[0m"
-  docker rmi subscription-migrator
+  if docker images | grep -q subscription-migrator; then
+    docker rmi subscription-migrator
+  fi
 fi
 
 echo -e "\033[0;32mBuilding the docker images\033[0m"
