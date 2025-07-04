@@ -3,14 +3,19 @@ version: '3.9'
 services:
   docfx:
     build: 
-      context: ./docs
+      context: ./docs                   
       dockerfile: Dockerfile
     volumes:
-      - .:/app
-    working_dir: /app
-    command: docfx metadata && docfx build && docfx serve _site
+      - ./docs/docfx_project:/app 
+      - ./docs/_exported_templates:/app/_exported_templates       
+      - ./Subscription.Core:/Subscription.Core
+      - ./Subscription.Publisher:/Subscription.Publisher
+      - ./Subscription.Consumer:/Subscription.Consumer
+      - ./Subscription.Infrastructure:/Subscription.Infrastructure
+    working_dir: /app                     
+    command: sh -c "docfx metadata && docfx build && docfx serve _site -p 8090 --hostname 0.0.0.0"
     ports:
-      - "8080:8080"     # Para acessar docfx via localhost:8080
+      - "8090:8090"   
 
   db:
     image: postgres:15
